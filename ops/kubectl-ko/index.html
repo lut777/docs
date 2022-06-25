@@ -1,0 +1,2290 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Kube-OVN Team">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.15">
+    
+    
+      
+        <title>kubectl 插件使用 - Kube-OVN 文档</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.c382b1dc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.cc9b2e1e.min.css">
+        
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kubectl" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="Kube-OVN 文档" class="md-header__button md-logo" aria-label="Kube-OVN 文档" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kube-OVN 文档
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              kubectl 插件使用
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="清空当前内容" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/kubeovn/kube-ovn/" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kubeovn/kube-ovn
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../.." class="md-tabs__link">
+      主页
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../start/prepare/" class="md-tabs__link">
+        快速入门
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../guide/setup-options/" class="md-tabs__link">
+        使用指南
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="./" class="md-tabs__link md-tabs__link--active">
+        运维指南
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../advance/multi-nic/" class="md-tabs__link">
+        高级功能
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../reference/architecture/" class="md-tabs__link">
+        技术参考
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../contact/" class="md-tabs__link">
+      联系方式
+    </a>
+  </li>
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Kube-OVN 文档" class="md-nav__button md-logo" aria-label="Kube-OVN 文档" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Kube-OVN 文档
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kubeovn/kube-ovn/" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kubeovn/kube-ovn
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        主页
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          快速入门
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="快速入门" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          快速入门
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../start/prepare/" class="md-nav__link">
+        准备工作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../start/one-step-install/" class="md-nav__link">
+        一键安装
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../start/underlay/" class="md-nav__link">
+        Underlay 网络安装
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../start/uninstall/" class="md-nav__link">
+        卸载
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          使用指南
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="使用指南" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          使用指南
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/setup-options/" class="md-nav__link">
+        安装和配置选项
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/static-ip-mac/" class="md-nav__link">
+        固定地址
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/subnet/" class="md-nav__link">
+        子网使用
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/vpc/" class="md-nav__link">
+        VPC 使用
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/qos/" class="md-nav__link">
+        容器网络 QoS 配置
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/prometheus-grafana/" class="md-nav__link">
+        配置监控和面板
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/dual-stack/" class="md-nav__link">
+        双栈使用
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/eip-snat/" class="md-nav__link">
+        EIP 和 SNAT 配置
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/mirror/" class="md-nav__link">
+        流量镜像
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/webhook/" class="md-nav__link">
+        Webhook 使用
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          运维指南
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="运维指南" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          运维指南
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          kubectl 插件使用
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        kubectl 插件使用
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    插件安装
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    插件使用
+  </a>
+  
+    <nav class="md-nav" aria-label="插件使用">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nb-sb-status-kick-backup-dbstatus-restore" class="md-nav__link">
+    [nb | sb] [status | kick | backup | dbstatus | restore]
+  </a>
+  
+    <nav class="md-nav" aria-label="[nb | sb] [status | kick | backup | dbstatus | restore]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    数据库集群状态查看
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    数据库节点下线
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    数据库备份
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    数据库存储状态查看
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    数据库修复
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nbctl-sbctl-options" class="md-nav__link">
+    [nbctl | sbctl] [options ...]
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vsctl-nodename-options" class="md-nav__link">
+    vsctl {nodeName} [options ...]
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ofctl-nodename-options" class="md-nav__link">
+    ofctl {nodeName} [options ...]
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dpctl-nodename-options" class="md-nav__link">
+    dpctl {nodeName} [options ...]
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#appctl-nodename-options" class="md-nav__link">
+    appctl {nodeName} [options ...]
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tcpdump-namespacepodname-tcpdump-options" class="md-nav__link">
+    tcpdump {namespace/podname} [tcpdump options ...]
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trace-namespacepodname-target-ip-address-icmptcpudp-target-tcp-or-udp-port" class="md-nav__link">
+    trace {namespace/podname} {target ip address} {icmp|tcp|udp} [target tcp or udp port]
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagnose-allnode-nodename" class="md-nav__link">
+    diagnose {all|node} [nodename]
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tuning-install-fastpathlocal-install-fastpathremove-fastpathinstall-sttlocal-install-sttremove-stt-centos7centos8-kernel-devel-version" class="md-nav__link">
+    tuning {install-fastpath|local-install-fastpath|remove-fastpath|install-stt|local-install-stt|remove-stt} {centos7|centos8}} [kernel-devel-version]
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reload" class="md-nav__link">
+    reload
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../delete-worker-node/" class="md-nav__link">
+        删除工作节点
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../change-ovn-central-node/" class="md-nav__link">
+        更换 ovn-central 节点
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recover-db/" class="md-nav__link">
+        OVN 数据库备份和恢复
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../change-default-subnet/" class="md-nav__link">
+        修改子网 CIDR
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../change-join-subnet/" class="md-nav__link">
+        修改 Join 子网 CIDR
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../from-calico/" class="md-nav__link">
+        卸载 Calico 安装 Kube-OVN
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        其他常见问题
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          高级功能
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="高级功能" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          高级功能
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advance/multi-nic/" class="md-nav__link">
+        多网卡管理
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advance/performance-tuning/" class="md-nav__link">
+        性能调优
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advance/fastpath/" class="md-nav__link">
+        手动编译 FastPath 模块
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advance/with-ovn-ic/" class="md-nav__link">
+        使用 OVN-IC 进行多集群互联
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advance/with-submariner/" class="md-nav__link">
+        使用 Submariner 进行多集群互联
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advance/with-bgp/" class="md-nav__link">
+        BGP 支持
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advance/with-cilium/" class="md-nav__link">
+        Cilium 集成
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advance/dhcp/" class="md-nav__link">
+        DHCP 设置
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advance/vpc-peering/" class="md-nav__link">
+        VPC 互联
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advance/external-gateway/" class="md-nav__link">
+        外部网关设置
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advance/vip/" class="md-nav__link">
+        VIP 预留设置
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advance/offload-mellanox/" class="md-nav__link">
+        Mellanox 网卡 Offload 支持
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advance/offload-corigine/" class="md-nav__link">
+        芯启源网卡 Offload 支持
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advance/windows/" class="md-nav__link">
+        Windows 支持
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advance/dpdk/" class="md-nav__link">
+        DPDK 支持
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advance/with-openstack/" class="md-nav__link">
+        OpenStack 集成
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          技术参考
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="技术参考" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          技术参考
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/architecture/" class="md-nav__link">
+        总体架构
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/underlay-topology/" class="md-nav__link">
+        Underlay 流量拓扑
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/dev-env/" class="md-nav__link">
+        开发环境构建
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/ovs-ovn-customized/" class="md-nav__link">
+        对上游 OVS/OVN 修改
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/tunnel-protocol/" class="md-nav__link">
+        隧道协议说明
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/metrics/" class="md-nav__link">
+        Kube-OVN 监控指标
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        联系方式
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    插件安装
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    插件使用
+  </a>
+  
+    <nav class="md-nav" aria-label="插件使用">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nb-sb-status-kick-backup-dbstatus-restore" class="md-nav__link">
+    [nb | sb] [status | kick | backup | dbstatus | restore]
+  </a>
+  
+    <nav class="md-nav" aria-label="[nb | sb] [status | kick | backup | dbstatus | restore]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    数据库集群状态查看
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    数据库节点下线
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    数据库备份
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    数据库存储状态查看
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    数据库修复
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nbctl-sbctl-options" class="md-nav__link">
+    [nbctl | sbctl] [options ...]
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vsctl-nodename-options" class="md-nav__link">
+    vsctl {nodeName} [options ...]
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ofctl-nodename-options" class="md-nav__link">
+    ofctl {nodeName} [options ...]
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dpctl-nodename-options" class="md-nav__link">
+    dpctl {nodeName} [options ...]
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#appctl-nodename-options" class="md-nav__link">
+    appctl {nodeName} [options ...]
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tcpdump-namespacepodname-tcpdump-options" class="md-nav__link">
+    tcpdump {namespace/podname} [tcpdump options ...]
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trace-namespacepodname-target-ip-address-icmptcpudp-target-tcp-or-udp-port" class="md-nav__link">
+    trace {namespace/podname} {target ip address} {icmp|tcp|udp} [target tcp or udp port]
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagnose-allnode-nodename" class="md-nav__link">
+    diagnose {all|node} [nodename]
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tuning-install-fastpathlocal-install-fastpathremove-fastpathinstall-sttlocal-install-sttremove-stt-centos7centos8-kernel-devel-version" class="md-nav__link">
+    tuning {install-fastpath|local-install-fastpath|remove-fastpath|install-stt|local-install-stt|remove-stt} {centos7|centos8}} [kernel-devel-version]
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reload" class="md-nav__link">
+    reload
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?39cf121f7a1f65bb4e4fe7c0a82c6014";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+                
+  <a href="https://github.com/kubeovn/docs/edit/master/docs/ops/kubectl-ko.md" title="编辑此页" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+
+<h1 id="kubectl">kubectl 插件使用</h1>
+<p>为了方便日常的运维操作，Kube-OVN 提供了 kubectl 插件工具，网络管理员
+可以通过该命令进行日常操作，例如：查看 OVN 数据库信息和状态，OVN 数据库
+备份和恢复，OVS 相关信息查看，tcpdump 特定容器，特定链路逻辑拓扑展示，
+网络问题诊断和性能优化。</p>
+<h2 id="_1">插件安装</h2>
+<p>Kube-OVN 安装时默认会部署插件到每个节点，若执行 kubectl 的机器不在集群内，
+或需要重装插件，可参考下面的步骤：</p>
+<p>下载 <code>kubectl-ko</code> 文件：</p>
+<pre><code class="language-bash">wget https://raw.githubusercontent.com/kubeovn/kube-ovn/release-1.10/dist/images/kubectl-ko
+</code></pre>
+<p>将该文件移动至 <code>$PATH</code> 目录下：</p>
+<pre><code class="language-bash">mv kubectl-ko /usr/local/bin/kubectl-ko
+</code></pre>
+<p>增加可执行权限：</p>
+<pre><code class="language-bash">chmod +x /usr/local/bin/kubectl-ko
+</code></pre>
+<p>检查插件是否可以正常使用：</p>
+<pre><code class="language-bash"># kubectl plugin list
+The following compatible plugins are available:
+
+/usr/local/bin/kubectl-ko
+</code></pre>
+<h2 id="_2">插件使用</h2>
+<p>运行 <code>kubectl ko</code> 会展示该插件所有可用的命令和用法描述，如下所示：</p>
+<pre><code class="language-bash"># kubectl ko
+kubectl ko {subcommand} [option...]
+Available Subcommands:
+  [nb|sb] [status|kick|backup|dbstatus|restore]     ovn-db operations show cluster status, kick stale server, backup database, get db consistency status or restore ovn nb db when met 'inconsistent data' error
+  nbctl [ovn-nbctl options ...]    invoke ovn-nbctl
+  sbctl [ovn-sbctl options ...]    invoke ovn-sbctl
+  vsctl {nodeName} [ovs-vsctl options ...]   invoke ovs-vsctl on the specified node
+  ofctl {nodeName} [ovs-ofctl options ...]   invoke ovs-ofctl on the specified node
+  dpctl {nodeName} [ovs-dpctl options ...]   invoke ovs-dpctl on the specified node
+  appctl {nodeName} [ovs-appctl options ...]   invoke ovs-appctl on the specified node
+  tcpdump {namespace/podname} [tcpdump options ...]     capture pod traffic
+  trace {namespace/podname} {target ip address} {icmp|tcp|udp} [target tcp or udp port]    trace ovn microflow of specific packet
+  diagnose {all|node} [nodename]    diagnose connectivity of all nodes or a specific node
+  tuning {install-fastpath|local-install-fastpath|remove-fastpath|install-stt|local-install-stt|remove-stt} {centos7|centos8}} [kernel-devel-version]  deploy  kernel optimisation components to the system
+  reload    restart all kube-ovn components
+</code></pre>
+<p>下面将介绍每个命令的具体功能和使用。</p>
+<h3 id="nb-sb-status-kick-backup-dbstatus-restore">[nb | sb] [status | kick | backup | dbstatus | restore]</h3>
+<p>该子命令主要对 OVN 北向或南向数据库进行操作，包括数据库集群状态查看，数据库节点下线，
+数据库备份，数据库存储状态查看和数据库修复。</p>
+<h4 id="_3">数据库集群状态查看</h4>
+<p>该命令会在对应 OVN 数据库的 leader 节点执行 <code>ovs-appctl cluster/status</code> 展示集群状态:</p>
+<pre><code class="language-bash"># kubectl ko nb status
+306b
+Name: OVN_Northbound
+Cluster ID: 9a87 (9a872522-3e7d-47ca-83a3-d74333e1a7ca)
+Server ID: 306b (306b256b-b5e1-4eb0-be91-4ca96adf6bad)
+Address: tcp:[172.18.0.2]:6643
+Status: cluster member
+Role: leader
+Term: 1
+Leader: self
+Vote: self
+
+Last Election started 280309 ms ago, reason: timeout
+Last Election won: 280309 ms ago
+Election timer: 5000
+Log: [139, 139]
+Entries not yet committed: 0
+Entries not yet applied: 0
+Connections: &lt;-8723 -&gt;8723 &lt;-85d6 -&gt;85d6
+Disconnections: 0
+Servers:
+    85d6 (85d6 at tcp:[172.18.0.4]:6643) next_index=139 match_index=138 last msg 763 ms ago
+    8723 (8723 at tcp:[172.18.0.3]:6643) next_index=139 match_index=138 last msg 763 ms ago
+    306b (306b at tcp:[172.18.0.2]:6643) (self) next_index=2 match_index=138
+status: ok
+</code></pre>
+<p>若 <code>Server</code> 下的 <code>match_index</code> 出现较大差别，且 <code>last msg</code> 时间较长则对应 Server 可能长时间没有响应，
+需要进一步查看。</p>
+<h4 id="_4">数据库节点下线</h4>
+<p>该命令会将某个节点从 OVN 数据库中移除，在节点下线或更换节点时需要用到。
+下面将以上一条命令所查看到的集群状态为例，下线 <code>172.18.0.3</code> 节点:</p>
+<pre><code class="language-bash"># kubectl ko nb kick 8723
+started removal
+</code></pre>
+<p>再次查看数据库集群状态确认节点已移除：</p>
+<pre><code class="language-bash"># kubectl ko nb status
+306b
+Name: OVN_Northbound
+Cluster ID: 9a87 (9a872522-3e7d-47ca-83a3-d74333e1a7ca)
+Server ID: 306b (306b256b-b5e1-4eb0-be91-4ca96adf6bad)
+Address: tcp:[172.18.0.2]:6643
+Status: cluster member
+Role: leader
+Term: 1
+Leader: self
+Vote: self
+
+Last Election started 324356 ms ago, reason: timeout
+Last Election won: 324356 ms ago
+Election timer: 5000
+Log: [140, 140]
+Entries not yet committed: 0
+Entries not yet applied: 0
+Connections: &lt;-85d6 -&gt;85d6
+Disconnections: 2
+Servers:
+    85d6 (85d6 at tcp:[172.18.0.4]:6643) next_index=140 match_index=139 last msg 848 ms ago
+    306b (306b at tcp:[172.18.0.2]:6643) (self) next_index=2 match_index=139
+status: ok
+</code></pre>
+<h4 id="_5">数据库备份</h4>
+<p>该子命令会备份当前 OVN 数据库至本地，可用于灾备和恢复：</p>
+<pre><code class="language-bash"># kubectl ko nb backup
+tar: Removing leading `/' from member names
+backup ovn-nb db to /root/ovnnb_db.060223191654183154.backup
+</code></pre>
+<h4 id="_6">数据库存储状态查看</h4>
+<p>该命令用来查看数据库文件是否存在损坏：</p>
+<pre><code class="language-bash"># kubectl ko nb dbstatus
+status: ok
+</code></pre>
+<p>若异常则显示 <code>inconsistent data</code> 需要使用下面的命令进行修复。</p>
+<h4 id="_7">数据库修复</h4>
+<p>若数据库状态进入 <code>inconsistent data</code> 可使用该命令进行修复：</p>
+<pre><code class="language-bash"># kubectl ko nb restore
+deployment.apps/ovn-central scaled
+ovn-central original replicas is 3
+first nodeIP is 172.18.0.5
+ovs-ovn pod on node 172.18.0.5 is ovs-ovn-8jxv9
+ovs-ovn pod on node 172.18.0.3 is ovs-ovn-sjzb6
+ovs-ovn pod on node 172.18.0.4 is ovs-ovn-t87zk
+backup nb db file
+restore nb db file, operate in pod ovs-ovn-8jxv9
+deployment.apps/ovn-central scaled
+finish restore nb db file and ovn-central replicas
+recreate ovs-ovn pods
+pod &quot;ovs-ovn-8jxv9&quot; deleted
+pod &quot;ovs-ovn-sjzb6&quot; deleted
+pod &quot;ovs-ovn-t87zk&quot; deleted
+</code></pre>
+<h3 id="nbctl-sbctl-options">[nbctl | sbctl] [options ...]</h3>
+<p>该子命令会直接进入 OVN 北向数据库或南向数据库 的 leader 节点分别执行 <code>ovn-nbctl</code> 和 <code>ovn-sbctl</code> 命令。
+更多该命令的详细用法请查询上游 OVN 的官方文档 <a href="https://man7.org/linux/man-pages/man8/ovn-nbctl.8.html">ovn-nbctl(8)</a> 和 <a href="https://man7.org/linux/man-pages/man8/ovn-sbctl.8.html">ovn-sbctl(8)</a>。</p>
+<pre><code class="language-bash"># kubectl ko nbctl show
+switch c7cd17e8-ceee-4a91-9bb3-e5a313fe1ece (snat)
+    port snat-ovn-cluster
+        type: router
+        router-port: ovn-cluster-snat
+switch 20e0c6d0-023a-4756-aec5-200e0c60f95d (join)
+    port node-liumengxin-ovn3-192.168.137.178
+        addresses: [&quot;00:00:00:64:FF:A8 100.64.0.4&quot;]
+    port node-liumengxin-ovn1-192.168.137.176
+        addresses: [&quot;00:00:00:AF:98:62 100.64.0.2&quot;]
+    port node-liumengxin-ovn2-192.168.137.177
+        addresses: [&quot;00:00:00:D9:58:B8 100.64.0.3&quot;]
+    port join-ovn-cluster
+        type: router
+        router-port: ovn-cluster-join
+switch 0191705c-f827-427b-9de3-3c3b7d971ba5 (central)
+    port central-ovn-cluster
+        type: router
+        router-port: ovn-cluster-central
+switch 2a45ff05-388d-4f85-9daf-e6fccd5833dc (ovn-default)
+    port alertmanager-main-0.monitoring
+        addresses: [&quot;00:00:00:6C:DF:A3 10.16.0.19&quot;]
+    port kube-state-metrics-5d6885d89-4nf8h.monitoring
+        addresses: [&quot;00:00:00:6F:02:1C 10.16.0.15&quot;]
+    port fake-kubelet-67c55dfd89-pv86k.kube-system
+        addresses: [&quot;00:00:00:5C:12:E8 10.16.19.177&quot;]
+    port ovn-default-ovn-cluster
+        type: router
+        router-port: ovn-cluster-ovn-default
+router 212f73dd-d63d-4d72-864b-a537e9afbee1 (ovn-cluster)
+    port ovn-cluster-snat
+        mac: &quot;00:00:00:7A:82:8F&quot;
+        networks: [&quot;172.22.0.1/16&quot;]
+    port ovn-cluster-join
+        mac: &quot;00:00:00:F8:18:5A&quot;
+        networks: [&quot;100.64.0.1/16&quot;]
+    port ovn-cluster-central
+        mac: &quot;00:00:00:4D:8C:F5&quot;
+        networks: [&quot;192.101.0.1/16&quot;]
+    port ovn-cluster-ovn-default
+        mac: &quot;00:00:00:A3:F8:18&quot;
+        networks: [&quot;10.16.0.1/16&quot;]
+</code></pre>
+<h3 id="vsctl-nodename-options">vsctl {nodeName} [options ...]</h3>
+<p>该命令会进入对应 <code>nodeName</code> 上的 <code>ovs-ovn</code> 容器，并执行相应的 <code>ovs-vsctl</code> 命令，查询并配置 <code>vswitchd</code>。
+更多该命令的详细用法请查询上游 OVS 的官方文档 <a href="https://man7.org/linux/man-pages/man8/ovs-vsctl.8.html">ovs-vsctl(8)</a>。</p>
+<pre><code class="language-bash"># kubectl ko vsctl kube-ovn-01 show
+0d4c4675-c9cc-440a-8c1a-878e17f81b88
+    Bridge br-int
+        fail_mode: secure
+        datapath_type: system
+        Port a2c1a8a8b83a_h
+            Interface a2c1a8a8b83a_h
+        Port &quot;4fa5c4cbb1a5_h&quot;
+            Interface &quot;4fa5c4cbb1a5_h&quot;
+        Port ovn-eef07d-0
+            Interface ovn-eef07d-0
+                type: stt
+                options: {csum=&quot;true&quot;, key=flow, remote_ip=&quot;192.168.137.178&quot;}
+        Port ovn0
+            Interface ovn0
+                type: internal
+        Port mirror0
+            Interface mirror0
+                type: internal
+        Port ovn-efa253-0
+            Interface ovn-efa253-0
+                type: stt
+                options: {csum=&quot;true&quot;, key=flow, remote_ip=&quot;192.168.137.177&quot;}
+        Port br-int
+            Interface br-int
+                type: internal
+    ovs_version: &quot;2.17.2&quot;
+</code></pre>
+<h3 id="ofctl-nodename-options">ofctl {nodeName} [options ...]</h3>
+<p>该命令会进入对应 <code>nodeName</code> 上的 <code>ovs-ovn</code> 容器，并执行相应的 <code>ovs-ofctl</code> 命令，查询或管理 OpenFlow。
+更多该命令的详细用法请查询上游 OVS 的官方文档 <a href="https://man7.org/linux/man-pages/man8/ovs-ofctl.8.html">ovs-ofctl(8)</a>。</p>
+<pre><code class="language-bash"># kubectl ko ofctl kube-ovn-01 dump-flows br-int
+NXST_FLOW reply (xid=0x4): flags=[more]
+ cookie=0xcf3429e6, duration=671791.432s, table=0, n_packets=0, n_bytes=0, idle_age=65534, hard_age=65534, priority=100,in_port=2 actions=load:0x4-&gt;NXM_NX_REG13[],load:0x9-&gt;NXM_NX_REG11[],load:0xb-&gt;NXM_NX_REG12[],load:0x4-&gt;OXM_OF_METADATA[],load:0x1-&gt;NXM_NX_REG14[],resubmit(,8)
+ cookie=0xc91413c6, duration=671791.431s, table=0, n_packets=907489, n_bytes=99978275, idle_age=0, hard_age=65534, priority=100,in_port=7 actions=load:0x1-&gt;NXM_NX_REG13[],load:0x9-&gt;NXM_NX_REG11[],load:0xb-&gt;NXM_NX_REG12[],load:0x4-&gt;OXM_OF_METADATA[],load:0x4-&gt;NXM_NX_REG14[],resubmit(,8)
+ cookie=0xf180459, duration=671791.431s, table=0, n_packets=17348582, n_bytes=2667811214, idle_age=0, hard_age=65534, priority=100,in_port=6317 actions=load:0xa-&gt;NXM_NX_REG13[],load:0x9-&gt;NXM_NX_REG11[],load:0xb-&gt;NXM_NX_REG12[],load:0x4-&gt;OXM_OF_METADATA[],load:0x9-&gt;NXM_NX_REG14[],resubmit(,8)
+ cookie=0x7806dd90, duration=671791.431s, table=0, n_packets=3235428, n_bytes=833821312, idle_age=0, hard_age=65534, priority=100,in_port=1 actions=load:0xd-&gt;NXM_NX_REG13[],load:0x9-&gt;NXM_NX_REG11[],load:0xb-&gt;NXM_NX_REG12[],load:0x4-&gt;OXM_OF_METADATA[],load:0x3-&gt;NXM_NX_REG14[],resubmit(,8)
+...
+</code></pre>
+<h3 id="dpctl-nodename-options">dpctl {nodeName} [options ...]</h3>
+<p>该命令会进入对应 <code>nodeName</code> 上的 <code>ovs-ovn</code> 容器，并执行相应的 <code>ovs-dpctl</code> 命令，查询或管理 OVS datapath。
+更多该命令的详细用法请查询上游 OVS 的官方文档 <a href="https://man7.org/linux/man-pages/man8/ovs-dpctl.8.html">ovs-dpctl(8)</a>。</p>
+<pre><code class="language-bash"># kubectl ko dpctl kube-ovn-01 show
+system@ovs-system:
+  lookups: hit:350805055 missed:21983648 lost:73
+  flows: 105
+  masks: hit:1970748791 total:22 hit/pkt:5.29
+  port 0: ovs-system (internal)
+  port 1: ovn0 (internal)
+  port 2: mirror0 (internal)
+  port 3: br-int (internal)
+  port 4: stt_sys_7471 (stt: packet_type=ptap)
+  port 5: eeb4d9e51b5d_h
+  port 6: a2c1a8a8b83a_h
+  port 7: 4fa5c4cbb1a5_h
+</code></pre>
+<h3 id="appctl-nodename-options">appctl {nodeName} [options ...]</h3>
+<p>该命令会进入对应 <code>nodeName</code> 上的 <code>ovs-ovn</code> 容器，并执行相应的 <code>ovs-appctl</code> 命令，来操作相关 daemon 进程。
+更多该命令的详细用法请查询上游 OVS 的官方文档 <a href="https://man7.org/linux/man-pages/man8/ovs-appctl.8.html">ovs-appctl(8)</a>。</p>
+<pre><code class="language-bash"># kubectl ko appctl kube-ovn-01 vlog/list
+                 console    syslog    file
+                 -------    ------    ------
+backtrace          OFF        ERR       INFO
+bfd                OFF        ERR       INFO
+bond               OFF        ERR       INFO
+bridge             OFF        ERR       INFO
+bundle             OFF        ERR       INFO
+bundles            OFF        ERR       INFO
+...
+</code></pre>
+<h3 id="tcpdump-namespacepodname-tcpdump-options">tcpdump {namespace/podname} [tcpdump options ...]</h3>
+<p>该命令会进入 <code>namespace/podname</code> 所在机器的 <code>kube-ovn-cni</code> 容器，并执行 <code>tcpdump</code> 抓取对应容器 veth 网卡
+端的流量，可以方便排查网络相关问题，如下所示：</p>
+<pre><code class="language-bash"># kubectl ko tcpdump default/ds1-l6n7p icmp
++ kubectl exec -it kube-ovn-cni-wlg4s -n kube-ovn -- tcpdump -nn -i d7176fe7b4e0_h icmp
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on d7176fe7b4e0_h, link-type EN10MB (Ethernet), capture size 262144 bytes
+06:52:36.619688 IP 100.64.0.3 &gt; 10.16.0.4: ICMP echo request, id 2, seq 1, length 64
+06:52:36.619746 IP 10.16.0.4 &gt; 100.64.0.3: ICMP echo reply, id 2, seq 1, length 64
+06:52:37.619588 IP 100.64.0.3 &gt; 10.16.0.4: ICMP echo request, id 2, seq 2, length 64
+06:52:37.619630 IP 10.16.0.4 &gt; 100.64.0.3: ICMP echo reply, id 2, seq 2, length 64
+06:52:38.619933 IP 100.64.0.3 &gt; 10.16.0.4: ICMP echo request, id 2, seq 3, length 64
+06:52:38.619973 IP 10.16.0.4 &gt; 100.64.0.3: ICMP echo reply, id 2, seq 3, length 64
+</code></pre>
+<h3 id="trace-namespacepodname-target-ip-address-icmptcpudp-target-tcp-or-udp-port">trace {namespace/podname} {target ip address} {icmp|tcp|udp} [target tcp or udp port]</h3>
+<p>该命令将会打印 Pod 通过特定协议访问某地址时对应的 OVN 逻辑流表和最终的 Openflow 流表，
+方便开发或运维时定位流表相关问题。</p>
+<pre><code class="language-bash"># kubectl ko trace default/ds1-l6n7p 8.8.8.8 icmp
++ kubectl exec ovn-central-5bc494cb5-np9hm -n kube-ovn -- ovn-trace --ct=new ovn-default 'inport == &quot;ds1-l6n7p.default&quot; &amp;&amp; ip.ttl == 64 &amp;&amp; icmp &amp;&amp; eth.src == 0a:00:00:10:00:05 &amp;&amp; ip4.src == 10.16.0.4 &amp;&amp; eth.dst == 00:00:00:B8:CA:43 &amp;&amp; ip4.dst == 8.8.8.8'
+# icmp,reg14=0xf,vlan_tci=0x0000,dl_src=0a:00:00:10:00:05,dl_dst=00:00:00:b8:ca:43,nw_src=10.16.0.4,nw_dst=8.8.8.8,nw_tos=0,nw_ecn=0,nw_ttl=64,icmp_type=0,icmp_code=0
+
+ingress(dp=&quot;ovn-default&quot;, inport=&quot;ds1-l6n7p.default&quot;)
+-----------------------------------------------------
+ 0. ls_in_port_sec_l2 (ovn-northd.c:4143): inport == &quot;ds1-l6n7p.default&quot; &amp;&amp; eth.src == {0a:00:00:10:00:05}, priority 50, uuid 39453393
+    next;
+ 1. ls_in_port_sec_ip (ovn-northd.c:2898): inport == &quot;ds1-l6n7p.default&quot; &amp;&amp; eth.src == 0a:00:00:10:00:05 &amp;&amp; ip4.src == {10.16.0.4}, priority 90, uuid 81bcd485
+    next;
+ 3. ls_in_pre_acl (ovn-northd.c:3269): ip, priority 100, uuid 7b4f4971
+    reg0[0] = 1;
+    next;
+ 5. ls_in_pre_stateful (ovn-northd.c:3396): reg0[0] == 1, priority 100, uuid 36cdd577
+    ct_next;
+
+ct_next(ct_state=new|trk)
+-------------------------
+ 6. ls_in_acl (ovn-northd.c:3759): ip &amp;&amp; (!ct.est || (ct.est &amp;&amp; ct_label.blocked == 1)), priority 1, uuid 7608af5b
+    reg0[1] = 1;
+    next;
+10. ls_in_stateful (ovn-northd.c:3995): reg0[1] == 1, priority 100, uuid 2aba1b90
+    ct_commit(ct_label=0/0x1);
+    next;
+16. ls_in_l2_lkup (ovn-northd.c:4470): eth.dst == 00:00:00:b8:ca:43, priority 50, uuid 5c9c3c9f
+    outport = &quot;ovn-default-ovn-cluster&quot;;
+    output;
+
+...
+</code></pre>
+<h3 id="diagnose-allnode-nodename">diagnose {all|node} [nodename]</h3>
+<p>诊断集群网络组件状态，并去对应节点的 <code>kube-ovn-pinger</code> 检测当前节点到其他节点和关键服务的连通性和网络延迟：</p>
+<pre><code class="language-bash"># kubectl ko diagnose all
+switch c7cd17e8-ceee-4a91-9bb3-e5a313fe1ece (snat)
+    port snat-ovn-cluster
+        type: router
+        router-port: ovn-cluster-snat
+switch 20e0c6d0-023a-4756-aec5-200e0c60f95d (join)
+    port node-liumengxin-ovn3-192.168.137.178
+        addresses: [&quot;00:00:00:64:FF:A8 100.64.0.4&quot;]
+    port node-liumengxin-ovn1-192.168.137.176
+        addresses: [&quot;00:00:00:AF:98:62 100.64.0.2&quot;]
+    port join-ovn-cluster
+        type: router
+        router-port: ovn-cluster-join
+switch 0191705c-f827-427b-9de3-3c3b7d971ba5 (central)
+    port central-ovn-cluster
+        type: router
+        router-port: ovn-cluster-central
+switch 2a45ff05-388d-4f85-9daf-e6fccd5833dc (ovn-default)
+    port ovn-default-ovn-cluster
+        type: router
+        router-port: ovn-cluster-ovn-default
+    port prometheus-k8s-1.monitoring
+        addresses: [&quot;00:00:00:AA:37:DF 10.16.0.23&quot;]
+router 212f73dd-d63d-4d72-864b-a537e9afbee1 (ovn-cluster)
+    port ovn-cluster-snat
+        mac: &quot;00:00:00:7A:82:8F&quot;
+        networks: [&quot;172.22.0.1/16&quot;]
+    port ovn-cluster-join
+        mac: &quot;00:00:00:F8:18:5A&quot;
+        networks: [&quot;100.64.0.1/16&quot;]
+    port ovn-cluster-central
+        mac: &quot;00:00:00:4D:8C:F5&quot;
+        networks: [&quot;192.101.0.1/16&quot;]
+    port ovn-cluster-ovn-default
+        mac: &quot;00:00:00:A3:F8:18&quot;
+        networks: [&quot;10.16.0.1/16&quot;]
+Routing Policies
+     31000                            ip4.dst == 10.16.0.0/16           allow
+     31000                           ip4.dst == 100.64.0.0/16           allow
+     30000                         ip4.dst == 192.168.137.177         reroute                100.64.0.3
+     30000                         ip4.dst == 192.168.137.178         reroute                100.64.0.4
+     29000                 ip4.src == $ovn.default.fake.6_ip4         reroute               100.64.0.22
+     29000                 ip4.src == $ovn.default.fake.7_ip4         reroute               100.64.0.21
+     29000                 ip4.src == $ovn.default.fake.8_ip4         reroute               100.64.0.23
+     29000 ip4.src == $ovn.default.liumengxin.ovn3.192.168.137.178_ip4         reroute                100.64.0.4
+     20000 ip4.src == $ovn.default.liumengxin.ovn1.192.168.137.176_ip4 &amp;&amp; ip4.dst != $ovn.cluster.overlay.subnets.IPv4         reroute                100.64.0.2
+     20000 ip4.src == $ovn.default.liumengxin.ovn2.192.168.137.177_ip4 &amp;&amp; ip4.dst != $ovn.cluster.overlay.subnets.IPv4         reroute                100.64.0.3
+     20000 ip4.src == $ovn.default.liumengxin.ovn3.192.168.137.178_ip4 &amp;&amp; ip4.dst != $ovn.cluster.overlay.subnets.IPv4         reroute                100.64.0.4
+IPv4 Routes
+Route Table &lt;main&gt;:
+                0.0.0.0/0                100.64.0.1 dst-ip
+UUID                                    LB                  PROTO      VIP                     IPs
+e9bcfd9d-793e-4431-9073-6dec96b75d71    cluster-tcp-load    tcp        10.100.209.132:10660    192.168.137.176:10660
+                                                            tcp        10.101.239.192:6641     192.168.137.177:6641
+                                                            tcp        10.101.240.101:3000     10.16.0.7:3000
+                                                            tcp        10.103.184.186:6642     192.168.137.177:6642
+35d2b7a5-e3a7-485a-a4b7-b4970eb0e63b    cluster-tcp-sess    tcp        10.100.158.128:8080     10.16.0.10:8080,10.16.0.5:8080,10.16.63.30:8080
+                                                            tcp        10.107.26.215:8080      10.16.0.19:8080,10.16.0.20:8080,10.16.0.21:8080
+                                                            tcp        10.107.26.215:9093      10.16.0.19:9093,10.16.0.20:9093,10.16.0.21:9093
+                                                            tcp        10.98.187.99:8080       10.16.0.22:8080,10.16.0.23:8080
+                                                            tcp        10.98.187.99:9090       10.16.0.22:9090,10.16.0.23:9090
+f43303e4-89aa-4d3e-a3dc-278a552fe27b    cluster-udp-load    udp        10.96.0.10:53           10.16.0.4:53,10.16.0.9:53
+_uuid               : 06776304-5a96-43ed-90c4-c4854c251699
+addresses           : []
+external_ids        : {vendor=kube-ovn}
+name                : node_liumengxin_ovn2_192.168.137.177_underlay_v6
+
+_uuid               : 62690625-87d5-491c-8675-9fd83b1f433c
+addresses           : []
+external_ids        : {vendor=kube-ovn}
+name                : node_liumengxin_ovn1_192.168.137.176_underlay_v6
+
+_uuid               : b03a9bae-94d5-4562-b34c-b5f6198e180b
+addresses           : [&quot;10.16.0.0/16&quot;, &quot;100.64.0.0/16&quot;, &quot;172.22.0.0/16&quot;, &quot;192.101.0.0/16&quot;]
+external_ids        : {vendor=kube-ovn}
+name                : ovn.cluster.overlay.subnets.IPv4
+
+_uuid               : e1056f3a-24cc-4666-8a91-75ee6c3c2426
+addresses           : []
+external_ids        : {vendor=kube-ovn}
+name                : ovn.cluster.overlay.subnets.IPv6
+
+_uuid               : 3e5d5fff-e670-47b2-a2f5-a39f4698a8c5
+addresses           : []
+external_ids        : {vendor=kube-ovn}
+name                : node_liumengxin_ovn3_192.168.137.178_underlay_v6
+_uuid               : 2d85dbdc-d0db-4abe-b19e-cc806d32b492
+action              : drop
+direction           : from-lport
+external_ids        : {}
+label               : 0
+log                 : false
+match               : &quot;inport==@ovn.sg.kubeovn_deny_all &amp;&amp; ip&quot;
+meter               : []
+name                : []
+options             : {}
+priority            : 2003
+severity            : []
+
+_uuid               : de790cc8-f155-405f-bb32-5a51f30c545f
+action              : drop
+direction           : to-lport
+external_ids        : {}
+label               : 0
+log                 : false
+match               : &quot;outport==@ovn.sg.kubeovn_deny_all &amp;&amp; ip&quot;
+meter               : []
+name                : []
+options             : {}
+priority            : 2003
+severity            : []
+Chassis &quot;e15ed4d4-1780-4d50-b09e-ea8372ed48b8&quot;
+    hostname: liumengxin-ovn1-192.168.137.176
+    Encap stt
+        ip: &quot;192.168.137.176&quot;
+        options: {csum=&quot;true&quot;}
+    Port_Binding node-liumengxin-ovn1-192.168.137.176
+    Port_Binding perf-6vxkn.default
+    Port_Binding kube-state-metrics-5d6885d89-4nf8h.monitoring
+    Port_Binding alertmanager-main-0.monitoring
+    Port_Binding kube-ovn-pinger-6ftdf.kube-system
+    Port_Binding fake-kubelet-67c55dfd89-pv86k.kube-system
+    Port_Binding prometheus-k8s-0.monitoring
+Chassis &quot;eef07da1-f8ad-4775-b14d-bd6a3b4eb0d5&quot;
+    hostname: liumengxin-ovn3-192.168.137.178
+    Encap stt
+        ip: &quot;192.168.137.178&quot;
+        options: {csum=&quot;true&quot;}
+    Port_Binding kube-ovn-pinger-7twb4.kube-system
+    Port_Binding prometheus-adapter-86df476d87-rl88g.monitoring
+    Port_Binding prometheus-k8s-1.monitoring
+    Port_Binding node-liumengxin-ovn3-192.168.137.178
+    Port_Binding perf-ff475.default
+    Port_Binding alertmanager-main-1.monitoring
+    Port_Binding blackbox-exporter-676d976865-tvsjd.monitoring
+Chassis &quot;efa253c9-494d-4719-83ae-b48ab0f11c03&quot;
+    hostname: liumengxin-ovn2-192.168.137.177
+    Encap stt
+        ip: &quot;192.168.137.177&quot;
+        options: {csum=&quot;true&quot;}
+    Port_Binding grafana-6c4c6b8fb7-pzd2c.monitoring
+    Port_Binding node-liumengxin-ovn2-192.168.137.177
+    Port_Binding alertmanager-main-2.monitoring
+    Port_Binding coredns-6789c94dd8-9jqsz.kube-system
+    Port_Binding coredns-6789c94dd8-25d4r.kube-system
+    Port_Binding prometheus-operator-7bbc99fc8b-wgjm4.monitoring
+    Port_Binding prometheus-adapter-86df476d87-gdxmc.monitoring
+    Port_Binding perf-fjnws.default
+    Port_Binding kube-ovn-pinger-vh2xg.kube-system
+ds kube-proxy ready
+kube-proxy ready
+deployment ovn-central ready
+deployment kube-ovn-controller ready
+ds kube-ovn-cni ready
+ds ovs-ovn ready
+deployment coredns ready
+ovn-nb leader check ok
+ovn-sb leader check ok
+ovn-northd leader check ok
+### kube-ovn-controller recent log
+
+### start to diagnose node liumengxin-ovn1-192.168.137.176
+#### ovn-controller log:
+2022-06-03T00:56:44.897Z|16722|inc_proc_eng|INFO|User triggered force recompute.
+2022-06-03T01:06:44.912Z|16723|inc_proc_eng|INFO|User triggered force recompute.
+2022-06-03T01:16:44.925Z|16724|inc_proc_eng|INFO|User triggered force recompute.
+2022-06-03T01:26:44.936Z|16725|inc_proc_eng|INFO|User triggered force recompute.
+2022-06-03T01:36:44.959Z|16726|inc_proc_eng|INFO|User triggered force recompute.
+2022-06-03T01:46:44.974Z|16727|inc_proc_eng|INFO|User triggered force recompute.
+2022-06-03T01:56:44.988Z|16728|inc_proc_eng|INFO|User triggered force recompute.
+2022-06-03T02:06:45.001Z|16729|inc_proc_eng|INFO|User triggered force recompute.
+2022-06-03T02:16:45.025Z|16730|inc_proc_eng|INFO|User triggered force recompute.
+2022-06-03T02:26:45.040Z|16731|inc_proc_eng|INFO|User triggered force recompute.
+
+#### ovs-vswitchd log:
+2022-06-02T23:03:00.137Z|00079|dpif(handler1)|WARN|system@ovs-system: execute ct(commit,zone=14,label=0/0x1,nat(src)),8 failed (Invalid argument) on packet icmp,vlan_tci=0x0000,dl_src=00:00:00:f8:07:c8,dl_dst=00:00:00:fa:1e:50,nw_src=10.16.0.5,nw_dst=10.16.0.10,nw_tos=0,nw_ecn=0,nw_ttl=64,icmp_type=8,icmp_code=0 icmp_csum:f9d1
+ with metadata skb_priority(0),tunnel(tun_id=0x160017000004,src=192.168.137.177,dst=192.168.137.176,ttl=64,tp_src=38881,tp_dst=7471,flags(csum|key)),skb_mark(0),ct_state(0x21),ct_zone(0xe),ct_tuple4(src=10.16.0.5,dst=10.16.0.10,proto=1,tp_src=8,tp_dst=0),in_port(4) mtu 0
+2022-06-02T23:23:31.840Z|00080|dpif(handler1)|WARN|system@ovs-system: execute ct(commit,zone=14,label=0/0x1,nat(src)),8 failed (Invalid argument) on packet icmp,vlan_tci=0x0000,dl_src=00:00:00:f8:07:c8,dl_dst=00:00:00:fa:1e:50,nw_src=10.16.0.5,nw_dst=10.16.0.10,nw_tos=0,nw_ecn=0,nw_ttl=64,icmp_type=8,icmp_code=0 icmp_csum:15b2
+ with metadata skb_priority(0),tunnel(tun_id=0x160017000004,src=192.168.137.177,dst=192.168.137.176,ttl=64,tp_src=38881,tp_dst=7471,flags(csum|key)),skb_mark(0),ct_state(0x21),ct_zone(0xe),ct_tuple4(src=10.16.0.5,dst=10.16.0.10,proto=1,tp_src=8,tp_dst=0),in_port(4) mtu 0
+2022-06-03T00:09:15.659Z|00081|dpif(handler1)|WARN|system@ovs-system: execute ct(commit,zone=14,label=0/0x1,nat(src)),8 failed (Invalid argument) on packet icmp,vlan_tci=0x0000,dl_src=00:00:00:dc:e3:63,dl_dst=00:00:00:fa:1e:50,nw_src=10.16.63.30,nw_dst=10.16.0.10,nw_tos=0,nw_ecn=0,nw_ttl=64,icmp_type=8,icmp_code=0 icmp_csum:e5a5
+ with metadata skb_priority(0),tunnel(tun_id=0x150017000004,src=192.168.137.178,dst=192.168.137.176,ttl=64,tp_src=9239,tp_dst=7471,flags(csum|key)),skb_mark(0),ct_state(0x21),ct_zone(0xe),ct_tuple4(src=10.16.63.30,dst=10.16.0.10,proto=1,tp_src=8,tp_dst=0),in_port(4) mtu 0
+2022-06-03T00:30:13.409Z|00064|dpif(handler2)|WARN|system@ovs-system: execute ct(commit,zone=14,label=0/0x1,nat(src)),8 failed (Invalid argument) on packet icmp,vlan_tci=0x0000,dl_src=00:00:00:f8:07:c8,dl_dst=00:00:00:fa:1e:50,nw_src=10.16.0.5,nw_dst=10.16.0.10,nw_tos=0,nw_ecn=0,nw_ttl=64,icmp_type=8,icmp_code=0 icmp_csum:6b4a
+ with metadata skb_priority(0),tunnel(tun_id=0x160017000004,src=192.168.137.177,dst=192.168.137.176,ttl=64,tp_src=38881,tp_dst=7471,flags(csum|key)),skb_mark(0),ct_state(0x21),ct_zone(0xe),ct_tuple4(src=10.16.0.5,dst=10.16.0.10,proto=1,tp_src=8,tp_dst=0),in_port(4) mtu 0
+2022-06-03T02:02:33.832Z|00082|dpif(handler1)|WARN|system@ovs-system: execute ct(commit,zone=14,label=0/0x1,nat(src)),8 failed (Invalid argument) on packet icmp,vlan_tci=0x0000,dl_src=00:00:00:f8:07:c8,dl_dst=00:00:00:fa:1e:50,nw_src=10.16.0.5,nw_dst=10.16.0.10,nw_tos=0,nw_ecn=0,nw_ttl=64,icmp_type=8,icmp_code=0 icmp_csum:a819
+ with metadata skb_priority(0),tunnel(tun_id=0x160017000004,src=192.168.137.177,dst=192.168.137.176,ttl=64,tp_src=38881,tp_dst=7471,flags(csum|key)),skb_mark(0),ct_state(0x21),ct_zone(0xe),ct_tuple4(src=10.16.0.5,dst=10.16.0.10,proto=1,tp_src=8,tp_dst=0),in_port(4) mtu 0
+
+#### ovs-vsctl show results:
+0d4c4675-c9cc-440a-8c1a-878e17f81b88
+    Bridge br-int
+        fail_mode: secure
+        datapath_type: system
+        Port a2c1a8a8b83a_h
+            Interface a2c1a8a8b83a_h
+        Port &quot;4fa5c4cbb1a5_h&quot;
+            Interface &quot;4fa5c4cbb1a5_h&quot;
+        Port ovn-eef07d-0
+            Interface ovn-eef07d-0
+                type: stt
+                options: {csum=&quot;true&quot;, key=flow, remote_ip=&quot;192.168.137.178&quot;}
+        Port ovn0
+            Interface ovn0
+                type: internal
+        Port &quot;04d03360e9a0_h&quot;
+            Interface &quot;04d03360e9a0_h&quot;
+        Port eeb4d9e51b5d_h
+            Interface eeb4d9e51b5d_h
+        Port mirror0
+            Interface mirror0
+                type: internal
+        Port &quot;8e5d887ccd80_h&quot;
+            Interface &quot;8e5d887ccd80_h&quot;
+        Port ovn-efa253-0
+            Interface ovn-efa253-0
+                type: stt
+                options: {csum=&quot;true&quot;, key=flow, remote_ip=&quot;192.168.137.177&quot;}
+        Port &quot;17512d5be1f1_h&quot;
+            Interface &quot;17512d5be1f1_h&quot;
+        Port br-int
+            Interface br-int
+                type: internal
+    ovs_version: &quot;2.17.2&quot;
+
+#### pinger diagnose results:
+I0603 10:35:04.349404   17619 pinger.go:19]
+-------------------------------------------------------------------------------
+Kube-OVN:
+  Version:       v1.10.1
+  Build:         2022-04-24_08:02:50
+  Commit:        git-73f9d15
+  Go Version:    go1.17.8
+  Arch:          amd64
+-------------------------------------------------------------------------------
+I0603 10:35:04.376797   17619 config.go:166] pinger config is &amp;{KubeConfigFile: KubeClient:0xc000493380 Port:8080 DaemonSetNamespace:kube-system DaemonSetName:kube-ovn-pinger Interval:5 Mode:job ExitCode:0 InternalDNS:kubernetes.default ExternalDNS: NodeName:liumengxin-ovn1-192.168.137.176 HostIP:192.168.137.176 PodName:kube-ovn-pinger-6ftdf PodIP:10.16.0.10 PodProtocols:[IPv4] ExternalAddress: NetworkMode:kube-ovn PollTimeout:2 PollInterval:15 SystemRunDir:/var/run/openvswitch DatabaseVswitchName:Open_vSwitch DatabaseVswitchSocketRemote:unix:/var/run/openvswitch/db.sock DatabaseVswitchFileDataPath:/etc/openvswitch/conf.db DatabaseVswitchFileLogPath:/var/log/openvswitch/ovsdb-server.log DatabaseVswitchFilePidPath:/var/run/openvswitch/ovsdb-server.pid DatabaseVswitchFileSystemIDPath:/etc/openvswitch/system-id.conf ServiceVswitchdFileLogPath:/var/log/openvswitch/ovs-vswitchd.log ServiceVswitchdFilePidPath:/var/run/openvswitch/ovs-vswitchd.pid ServiceOvnControllerFileLogPath:/var/log/ovn/ovn-controller.log ServiceOvnControllerFilePidPath:/var/run/ovn/ovn-controller.pid}
+I0603 10:35:04.449166   17619 exporter.go:75] liumengxin-ovn1-192.168.137.176: exporter connect successfully
+I0603 10:35:04.554011   17619 ovn.go:21] ovs-vswitchd and ovsdb are up
+I0603 10:35:04.651293   17619 ovn.go:33] ovn_controller is up
+I0603 10:35:04.651342   17619 ovn.go:39] start to check port binding
+I0603 10:35:04.749613   17619 ovn.go:135] chassis id is 1d7f3d6c-eec5-4b3c-adca-2969d9cdfd80
+I0603 10:35:04.763487   17619 ovn.go:49] port in sb is [node-liumengxin-ovn1-192.168.137.176 perf-6vxkn.default kube-state-metrics-5d6885d89-4nf8h.monitoring alertmanager-main-0.monitoring kube-ovn-pinger-6ftdf.kube-system fake-kubelet-67c55dfd89-pv86k.kube-system prometheus-k8s-0.monitoring]
+I0603 10:35:04.763583   17619 ovn.go:61] ovs and ovn-sb binding check passed
+I0603 10:35:05.049309   17619 ping.go:259] start to check apiserver connectivity
+I0603 10:35:05.053666   17619 ping.go:268] connect to apiserver success in 4.27ms
+I0603 10:35:05.053786   17619 ping.go:129] start to check pod connectivity
+I0603 10:35:05.249590   17619 ping.go:159] ping pod: kube-ovn-pinger-6ftdf 10.16.0.10, count: 3, loss count 0, average rtt 16.30ms
+I0603 10:35:05.354135   17619 ping.go:159] ping pod: kube-ovn-pinger-7twb4 10.16.63.30, count: 3, loss count 0, average rtt 1.81ms
+I0603 10:35:05.458460   17619 ping.go:159] ping pod: kube-ovn-pinger-vh2xg 10.16.0.5, count: 3, loss count 0, average rtt 1.92ms
+I0603 10:35:05.458523   17619 ping.go:83] start to check node connectivity
+</code></pre>
+<h3 id="tuning-install-fastpathlocal-install-fastpathremove-fastpathinstall-sttlocal-install-sttremove-stt-centos7centos8-kernel-devel-version">tuning {install-fastpath|local-install-fastpath|remove-fastpath|install-stt|local-install-stt|remove-stt} {centos7|centos8}} [kernel-devel-version]</h3>
+<p>该命令执行性能调优相关操作，具体使用请参考<a href="../../advance/performance-tuning/">性能调优</a></p>
+<h3 id="reload">reload</h3>
+<p>该命令重启所有 Kube-OVN 相关组件</p>
+<pre><code class="language-bash"># kubectl ko reload
+pod &quot;ovn-central-8684dd94bd-vzgcr&quot; deleted
+Waiting for deployment &quot;ovn-central&quot; rollout to finish: 0 of 1 updated replicas are available...
+deployment &quot;ovn-central&quot; successfully rolled out
+pod &quot;ovs-ovn-bsnvz&quot; deleted
+pod &quot;ovs-ovn-m9b98&quot; deleted
+pod &quot;kube-ovn-controller-8459db5ff4-64c62&quot; deleted
+Waiting for deployment &quot;kube-ovn-controller&quot; rollout to finish: 0 of 1 updated replicas are available...
+deployment &quot;kube-ovn-controller&quot; successfully rolled out
+pod &quot;kube-ovn-cni-2klnh&quot; deleted
+pod &quot;kube-ovn-cni-t2jz4&quot; deleted
+Waiting for daemon set &quot;kube-ovn-cni&quot; rollout to finish: 0 of 2 updated pods are available...
+Waiting for daemon set &quot;kube-ovn-cni&quot; rollout to finish: 1 of 2 updated pods are available...
+daemon set &quot;kube-ovn-cni&quot; successfully rolled out
+pod &quot;kube-ovn-pinger-ln72z&quot; deleted
+pod &quot;kube-ovn-pinger-w8lrk&quot; deleted
+Waiting for daemon set &quot;kube-ovn-pinger&quot; rollout to finish: 0 of 2 updated pods are available...
+Waiting for daemon set &quot;kube-ovn-pinger&quot; rollout to finish: 1 of 2 updated pods are available...
+daemon set &quot;kube-ovn-pinger&quot; successfully rolled out
+pod &quot;kube-ovn-monitor-7fb67d5488-7q6zb&quot; deleted
+Waiting for deployment &quot;kube-ovn-monitor&quot; rollout to finish: 0 of 1 updated replicas are available...
+deployment &quot;kube-ovn-monitor&quot; successfully rolled out
+</code></pre>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      最后更新:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">June 25, 2022</span>
+      
+        <br>
+        创建日期:
+        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">June 25, 2022</span>
+      
+    
+  </small>
+</div>
+
+              
+
+<!-- Giscus -->
+<h2 id="__comments">评论</h2>
+<!-- Replace with generated snippet -->
+<script src="https://giscus.app/client.js"
+        data-repo="kubeovn/kube-ovn"
+        data-repo-id="MDEwOlJlcG9zaXRvcnkxNzcwNjg5NjE="
+        data-category="Announcements"
+        data-category-id="DIC_kwDOCo3boc4CAj60"
+        data-mapping="pathname"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="light"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+</script>
+<!-- Reload on palette change -->
+<script>
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object")
+      if (palette.color.scheme === "slate") {
+        var giscus = document.querySelector("script[src*=giscus]")
+        giscus.setAttribute("data-theme", "dark")
+      }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+            </article>
+          </div>
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" data-md-state="hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            回到页面顶部
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="页脚">
+      
+        
+        <a href="../../guide/webhook/" class="md-footer__link md-footer__link--prev" aria-label="上一页: Webhook 使用" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              Webhook 使用
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../delete-worker-node/" class="md-footer__link md-footer__link--next" aria-label="下一页: 删除工作节点" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              删除工作节点
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2022 The Linux Foundation
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/kubeovn" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+      
+      
+    
+    <a href="https://github.com/kubeovn" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+    
+    
+      
+      
+    
+    <a href="https://hub.docker.com/r/kubeovn/kube-ovn" target="_blank" rel="noopener" title="hub.docker.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M349.9 236.3h-66.1v-59.4h66.1v59.4zm0-204.3h-66.1v60.7h66.1V32zm78.2 144.8H362v59.4h66.1v-59.4zm-156.3-72.1h-66.1v60.1h66.1v-60.1zm78.1 0h-66.1v60.1h66.1v-60.1zm276.8 100c-14.4-9.7-47.6-13.2-73.1-8.4-3.3-24-16.7-44.9-41.1-63.7l-14-9.3-9.3 14c-18.4 27.8-23.4 73.6-3.7 103.8-8.7 4.7-25.8 11.1-48.4 10.7H2.4c-8.7 50.8 5.8 116.8 44 162.1 37.1 43.9 92.7 66.2 165.4 66.2 157.4 0 273.9-72.5 328.4-204.2 21.4.4 67.6.1 91.3-45.2 1.5-2.5 6.6-13.2 8.5-17.1l-13.3-8.9zm-511.1-27.9h-66v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1v-59.4zm-78.1-72.1h-66.1v60.1h66.1v-60.1z"/></svg>
+    </a>
+  
+    
+    
+      
+      
+    
+    <a href="https://kube-ovn-slackin.herokuapp.com/" target="_blank" rel="noopener" title="kube-ovn-slackin.herokuapp.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M94.12 315.1c0 25.9-21.16 47.06-47.06 47.06S0 341 0 315.1c0-25.9 21.16-47.06 47.06-47.06h47.06v47.06zm23.72 0c0-25.9 21.16-47.06 47.06-47.06s47.06 21.16 47.06 47.06v117.84c0 25.9-21.16 47.06-47.06 47.06s-47.06-21.16-47.06-47.06V315.1zm47.06-188.98c-25.9 0-47.06-21.16-47.06-47.06S139 32 164.9 32s47.06 21.16 47.06 47.06v47.06H164.9zm0 23.72c25.9 0 47.06 21.16 47.06 47.06s-21.16 47.06-47.06 47.06H47.06C21.16 243.96 0 222.8 0 196.9s21.16-47.06 47.06-47.06H164.9zm188.98 47.06c0-25.9 21.16-47.06 47.06-47.06 25.9 0 47.06 21.16 47.06 47.06s-21.16 47.06-47.06 47.06h-47.06V196.9zm-23.72 0c0 25.9-21.16 47.06-47.06 47.06-25.9 0-47.06-21.16-47.06-47.06V79.06c0-25.9 21.16-47.06 47.06-47.06 25.9 0 47.06 21.16 47.06 47.06V196.9zM283.1 385.88c25.9 0 47.06 21.16 47.06 47.06 0 25.9-21.16 47.06-47.06 47.06-25.9 0-47.06-21.16-47.06-47.06v-47.06h47.06zm0-23.72c-25.9 0-47.06-21.16-47.06-47.06 0-25.9 21.16-47.06 47.06-47.06h117.84c25.9 0 47.06 21.16 47.06 47.06 0 25.9-21.16 47.06-47.06 47.06H283.1z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.top"], "search": "../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\s\\-\uff0c\u3002]+", "search.placeholder": "\u641c\u7d22", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version.title": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a6c66575.min.js"></script>
+      
+    
+  </body>
+</html>
