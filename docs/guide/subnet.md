@@ -116,8 +116,8 @@ spec:
   - 10.66.0.101..10.66.0.151
   gateway: 10.66.0.1
   namespaces:
-  - ns1
-  - ns2
+  - ls1
+  - ls2
 EOF
 ```
 
@@ -251,8 +251,8 @@ spec:
   protocol: IPv4
   default: false
   namespaces:
-  - ns1
-  - ns2
+  - ls1
+  - ls2
   cidrBlock: 10.69.0.0/16
   private: true
   allowSubnets:
