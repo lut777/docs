@@ -248,3 +248,12 @@ kubectl-ko nbctl ls-del ts
 ```
 
 在对端集群重复同样的步骤。
+
+## 修改 az-name
+
+config 文件的 az-name 可以通过 `kubectl edit` 的方式直接修改. 但是修改后需要执行以下命令以保证网络立刻连通(不执行的话可能存在最长10分钟的跨集群网络不通). 
+
+```bash
+$ kubectl -n kube-system exec $(kubectl -n kube-system get pods | grep cni | awk '{print $1}' | head -n 1) -c cni-server  -- ovn-appctl -t ovn-controller inc-engine/recompute
+```
+
